@@ -103,7 +103,7 @@ export default class VLCPlayerView extends Component {
       showLeftButton,
       showMiddleButton,
       showRightButton,
-      errorTitle
+      errorTitle,
     } = this.props;
     let { isLoading, loadingSuccess, showControls, isError } = this.state;
     let showGG = false;
@@ -148,7 +148,15 @@ export default class VLCPlayerView extends Component {
             }
           }
         }}>
+           {realShowLoding &&
+          !isError && (
+            <View style={styles.loading}>
+              <ActivityIndicator size={'large'} animating={true} color="#fff" />
+            </View>
+          )}
         <VLCPlayer
+          hwDecoderEnabled={1}
+          hwDecoderForced={1}
           ref={ref => (this.vlcPlayer = ref)}
           paused={this.state.paused}
           //seek={this.state.seek}
@@ -166,13 +174,9 @@ export default class VLCPlayerView extends Component {
           onError={this._onError}
           onOpen={this._onOpen}
           onLoadStart={this._onLoadStart}
+         
         />
-        {realShowLoding &&
-          !isError && (
-            <View style={styles.loading}>
-              <ActivityIndicator size={'large'} animating={true} color="#fff" />
-            </View>
-          )}
+       
         {isError && (
           <View style={[styles.loading, { backgroundColor: '#000' }]}>
             <Text style={{ color: 'red' }}>{errorTitle}</Text>
@@ -298,6 +302,7 @@ export default class VLCPlayerView extends Component {
    * @param event
    */
   onBuffering(event) {
+    console.log('sdfs');
     this.setState({
       isLoading: true,
       isError: false,
@@ -347,6 +352,7 @@ export default class VLCPlayerView extends Component {
   };
 
   _onLoadStart = e => {
+    const {isLive} = this.props;
     console.log('_onLoadStart');
     console.log(e);
     let { isError } = this.state;
@@ -381,6 +387,11 @@ export default class VLCPlayerView extends Component {
         });
       })
     }
+    // if(Platform.OS==='android' && isLive){
+    //   this.checkIsPlay = setInterval(()=>{
+    //       console.log()
+    //   },260);
+    // }
   };
 
   _reload = () => {
@@ -508,7 +519,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     top: 0,
-    zIndex: 0,
+    zIndex: -24,
     width: '100%',
     height: '100%',
     justifyContent: 'center',
