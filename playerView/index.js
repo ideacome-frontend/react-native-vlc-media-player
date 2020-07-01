@@ -91,6 +91,12 @@ export default class CommonVideo extends Component {
     onGoLivePress: PropTypes.func,
 
     onReplayPress: PropTypes.func,
+    /** 进度条 */
+    showSlider: PropTypes.bool,
+    /** 进度条颜色 */
+    sliderColor: PropTypes.string,
+    /** 是否显示控制工具条 */
+    showContolBar: PropTypes.bool,
   };
 
   static getDerivedStateFromProps(nextProps, preState) {

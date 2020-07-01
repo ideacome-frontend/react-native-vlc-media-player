@@ -63,8 +63,6 @@ export default class ControlBtn extends Component {
       onFullPress,
       onValueChange,
       onSlidingComplete,
-      currentTime,
-      totalTime,
       onLeftPress,
       title,
       onEnd,
@@ -108,44 +106,6 @@ export default class ControlBtn extends Component {
                   </TouchableOpacity>
                 )
               }
-
-              {/* {showSlider && totalTime > 0 &&(
-                <View
-                  style={{
-                    flex: 1,
-                    alignItems: 'center',
-                    flexDirection: 'row',
-                    //justifyContent: 'space-between',
-                  }}>
-                  <View style={{justifyContent:'center',alignItems:'center',height:50, minWidth: 50,}}>
-                    <Text style={{fontSize: 11,color: '#fff',}}>
-                      {this._getTime(currentTime) || 0}
-                    </Text>
-                  </View>
-                  <View style={styles.progress}>
-                    <Slider
-                      minimumTrackTintColor="#30a935"
-                      thumbStyle={styles.thumb}
-                      style={{ width: '100%' }}
-                      value={currentTime}
-                      maximumValue={totalTime}
-                      step={1}
-                      onValueChange={value => {
-                        onValueChange && onValueChange(value);
-                      }}
-                      onSlidingComplete={value => {
-                        onSlidingComplete && onSlidingComplete(value);
-                      }}
-                    />
-                  </View>
-                  <View style={{justifyContent:'center',alignItems:'center',height:50, minWidth: 50}}>
-                  <Text
-                    style={{fontSize: 11,color: '#fff'}}>
-                    {this._getTime(totalTime) || 0}
-                  </Text>
-                  </View>
-                </View>
-              )} */}
 
               <View style={styles.right}>
                 <TouchableOpacity
@@ -225,13 +185,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
     alignItems: 'center',
     justifyContent: 'space-between',
-  },
-
-  progress: {
-    flex: 1,
-    borderRadius: 3,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   left: {
     flexDirection: 'row',

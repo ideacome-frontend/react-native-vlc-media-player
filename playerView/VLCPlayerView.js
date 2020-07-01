@@ -18,6 +18,7 @@ import VLCPlayer from '../VLCPlayer';
 import PropTypes from 'prop-types';
 import TimeLimt from './TimeLimit';
 import ControlBtn from './ControlBtn';
+import Slider from './Slider';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { getStatusBarHeight } from './SizeController';
 const statusBarHeight = getStatusBarHeight();
@@ -104,6 +105,9 @@ export default class VLCPlayerView extends Component {
       showMiddleButton,
       showRightButton,
       errorTitle,
+      showSlider,
+      sliderColor,
+      showContolBar
     } = this.props;
     let { isLoading, loadingSuccess, showControls, isError } = this.state;
     let showGG = false;
@@ -174,7 +178,6 @@ export default class VLCPlayerView extends Component {
           onError={this._onError}
           onOpen={this._onOpen}
           onLoadStart={this._onLoadStart}
-         
         />
        
         {isError && (
@@ -229,21 +232,37 @@ export default class VLCPlayerView extends Component {
             )}
           </View>
         </View>
-        <View style={[styles.bottomView]}>
-          {showControls && (
-            <ControlBtn
-              //style={isFull?{width:deviceHeight}:{}}
-              showSlider={!isGG}
-              showGG={showGG}
-              onEnd={onEnd}
-              title={title}
-              onLeftPress={onLeftPress}
-              paused={this.state.paused}
-              isFull={isFull}
+        {showContolBar &&(
+          <View style={[styles.bottomView]}>
+            {showControls && (
+              <ControlBtn
+                //style={isFull?{width:deviceHeight}:{}}
+                showSlider={!isGG}
+                showGG={showGG}
+                onEnd={onEnd}
+                title={title}
+                onLeftPress={onLeftPress}
+                paused={this.state.paused}
+                isFull={isFull}
+                onPausedPress={this._play}
+                onFullPress={this._toFullScreen}
+                showGoLive={showGoLive}
+                onGoLivePress={onGoLivePress}
+                onReplayPress={onReplayPress}
+                titleGolive={titleGolive}
+                showLeftButton={showLeftButton}
+                showMiddleButton={showMiddleButton}
+                showRightButton={showRightButton}
+              />
+            )}
+          </View>
+        )}
+        <View style={[styles.sliderView]}>
+          {showSlider && (
+            <Slider
               currentTime={this.state.currentTime}
               totalTime={this.state.totalTime}
-              onPausedPress={this._play}
-              onFullPress={this._toFullScreen}
+              sliderColor={sliderColor}
               onValueChange={value => {
                 this.changingSlider = true;
                 this.setState({
@@ -257,17 +276,21 @@ export default class VLCPlayerView extends Component {
                 } else {
                   this.vlcPlayer.seek(value);
                 }
-              }}
-              showGoLive={showGoLive}
-              onGoLivePress={onGoLivePress}
-              onReplayPress={onReplayPress}
-              titleGolive={titleGolive}
-              showLeftButton={showLeftButton}
-              showMiddleButton={showMiddleButton}
-              showRightButton={showRightButton}
-            />
+              }} />
           )}
         </View>
+        {this.state.paused && (
+          <TouchableOpacity
+            onPress={this._play}
+            style={{
+              width: 100,
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 10,
+            }}>
+            <Icon name={'play-circle-outline'} size={100} color="#fff" />
+          </TouchableOpacity>
+        )}
       </TouchableOpacity>
     );
   }
@@ -278,9 +301,9 @@ export default class VLCPlayerView extends Component {
    */
   onPlaying(event) {
     this.isEnding = false;
-    // if (this.state.paused) {
-    //   this.setState({ paused: false });
-    // }
+    if (this.state.paused) {
+      this.setState({ paused: false });
+    }
     console.log('onPlaying');
   }
 
@@ -290,10 +313,11 @@ export default class VLCPlayerView extends Component {
    */
   onPaused(event) {
     // if (!this.state.paused) {
-    //   this.setState({ paused: true, showControls: true });
+    //   this.setState({ paused: true });
     // } else {
     //   this.setState({ showControls: true });
     // }
+    this._play()
     console.log('onPaused');
   }
 
@@ -550,6 +574,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '100%',
     backgroundColor: 'rgba(0,0,0,0)',
+  },
+  sliderView: {
+    bottom: 0,
+    left: 0,
+    height: 18,
+    position: 'absolute',
+    width: '100%',
+    backgroundColor: 'transparent',
   },
   backBtn: {
     height: 45,
