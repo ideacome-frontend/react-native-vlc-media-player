@@ -39,6 +39,7 @@ export default class VLCPlayerView extends Component {
       currentTime: 0.0,
       totalTime: 0.0,
       showControls: false,
+      showPlayIcon: false,
       seek: 0,
       isError: false,
     };
@@ -109,7 +110,7 @@ export default class VLCPlayerView extends Component {
       sliderColor,
       showContolBar
     } = this.props;
-    let { isLoading, loadingSuccess, showControls, isError } = this.state;
+    let { isLoading, loadingSuccess, showControls, showPlayIcon, isError } = this.state;
     let showGG = false;
     let realShowLoding = false;
     let source = {};
@@ -279,15 +280,10 @@ export default class VLCPlayerView extends Component {
               }} />
           )}
         </View>
-        {this.state.paused && (
+        {this.state.showPlayIcon && (
           <TouchableOpacity
             onPress={this._play}
-            style={{
-              width: 100,
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginTop: 10,
-            }}>
+            style={styles.playIcon}>
             <Icon name={'play-circle-outline'} size={100} color="#fff" />
           </TouchableOpacity>
         )}
@@ -301,8 +297,11 @@ export default class VLCPlayerView extends Component {
    */
   onPlaying(event) {
     this.isEnding = false;
-    if (this.state.paused) {
-      this.setState({ paused: false });
+    // if (this.state.paused) {
+    //   this.setState({ paused: false });
+    // }
+    if (!this.props.showContolBar) {
+      this.setState({ showPlayIcon: false });
     }
     console.log('onPlaying');
   }
@@ -317,7 +316,9 @@ export default class VLCPlayerView extends Component {
     // } else {
     //   this.setState({ showControls: true });
     // }
-    this._play()
+    if (!this.props.showContolBar) {
+      this.setState({ showPlayIcon: true });
+    }
     console.log('onPaused');
   }
 
@@ -578,7 +579,7 @@ const styles = StyleSheet.create({
   sliderView: {
     bottom: 0,
     left: 0,
-    height: 18,
+    height: 10,
     position: 'absolute',
     width: '100%',
     backgroundColor: 'transparent',
@@ -600,4 +601,15 @@ const styles = StyleSheet.create({
     width: 40,
     paddingTop: 3,
   },
+  playIcon: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    opacity: .75
+  }
 });

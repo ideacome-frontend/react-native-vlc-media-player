@@ -63,9 +63,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   thumb: {
-    width: 6,
-    height: 18,
+    width: 10,
+    height: 10,
     backgroundColor: '#fff',
-    borderRadius: 4,
+    borderRadius: 5,
   },
 });
