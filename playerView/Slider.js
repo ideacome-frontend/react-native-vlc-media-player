@@ -16,7 +16,7 @@ import Slider from 'react-native-slider';
 import PropTypes from 'prop-types';
 import TimeLimt from './TimeLimit';
 
-export default class Slider extends Component {
+export default class SliderBar extends Component {
   static defaultProps = {
     titleGolive: 'Go live',
     showLeftButton: true,

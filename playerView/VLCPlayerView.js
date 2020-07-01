@@ -18,7 +18,7 @@ import VLCPlayer from '../VLCPlayer';
 import PropTypes from 'prop-types';
 import TimeLimt from './TimeLimit';
 import ControlBtn from './ControlBtn';
-import Slider from './Slider';
+import SliderBar from './SliderBar';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { getStatusBarHeight } from './SizeController';
 const statusBarHeight = getStatusBarHeight();
@@ -259,7 +259,7 @@ export default class VLCPlayerView extends Component {
         )}
         <View style={[styles.sliderView]}>
           {showSlider && (
-            <Slider
+            <SliderBar
               currentTime={this.state.currentTime}
               totalTime={this.state.totalTime}
               sliderColor={sliderColor}
