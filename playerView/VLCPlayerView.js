@@ -145,15 +145,23 @@ export default class VLCPlayerView extends Component {
           let currentTime = new Date().getTime();
           if (this.touchTime === 0) {
             this.touchTime = currentTime;
-            this.setState({ showControls: !this.state.showControls });
+            if (showContolBar) {
+              this.setState({ showControls: !this.state.showControls });
+            } else {
+              this.setState({ paused: !this.state.paused });
+            }
           } else {
             if (currentTime - this.touchTime >= 500) {
               this.touchTime = currentTime;
-              this.setState({ showControls: !this.state.showControls });
+              if (showContolBar) {
+                this.setState({ showControls: !this.state.showControls });
+              } else {
+                this.setState({ paused: !this.state.paused });
+              }
             }
           }
         }}>
-           {realShowLoding &&
+        {realShowLoding &&
           !isError && (
             <View style={styles.loading}>
               <ActivityIndicator size={'large'} animating={true} color="#fff" />
@@ -180,7 +188,7 @@ export default class VLCPlayerView extends Component {
           onOpen={this._onOpen}
           onLoadStart={this._onLoadStart}
         />
-       
+
         {isError && (
           <View style={[styles.loading, { backgroundColor: '#000' }]}>
             <Text style={{ color: 'red' }}>{errorTitle}</Text>
@@ -233,7 +241,7 @@ export default class VLCPlayerView extends Component {
             )}
           </View>
         </View>
-        {showContolBar &&(
+        {showContolBar && (
           <View style={[styles.bottomView]}>
             {showControls && (
               <ControlBtn
@@ -377,11 +385,12 @@ export default class VLCPlayerView extends Component {
   };
 
   _onLoadStart = e => {
-    const {isLive} = this.props;
+    const { isLive } = this.props;
     console.log('_onLoadStart');
     console.log(e);
     let { isError } = this.state;
     if (isError) {
+      console.log('出错了')
       this.reloadSuccess = true;
       let { currentTime, totalTime } = this.state;
       if (Platform.OS === 'ios') {
