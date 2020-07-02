@@ -308,9 +308,6 @@ export default class VLCPlayerView extends Component {
     // if (this.state.paused) {
     //   this.setState({ paused: false });
     // }
-    if (!this.props.showContolBar) {
-      this.setState({ showPlayIcon: false });
-    }
     console.log('onPlaying');
   }
 
@@ -354,14 +351,16 @@ export default class VLCPlayerView extends Component {
     let diffTime = currentTime - this.bufferTime;
     if (diffTime > 1000) {
       clearInterval(this.bufferInterval);
-      this.setState({
-        paused: true,
-      }, () => {
+      if (!this.state.paused) {
         this.setState({
-          paused: false,
-          isLoading: false,
+          paused: true,
+        }, () => {
+          this.setState({
+            paused: false,
+            isLoading: false,
+          });
         });
-      });
+      }
       this.bufferInterval = null;
       console.log('remove  bufferIntervalFunction');
     }
@@ -484,13 +483,13 @@ export default class VLCPlayerView extends Component {
       this.setState(
         {
           paused: true,
+          showPlayIcon: true
           //showControls: true,
         },
         () => {
           if (!this.isEnding) {
             onEnd && onEnd();
             if (!isGG) {
-              this.vlcPlayer.resume && this.vlcPlayer.resume(false);
               console.log(this.props.uri + ':   onEnded');
             } else {
               console.log('片头：' + this.props.uri + ':   onEnded');
@@ -532,6 +531,14 @@ export default class VLCPlayerView extends Component {
    * @private
    */
   _play = () => {
+    console.log('_play')
+    // 结束的重新播放
+    if (this.isEnding) {
+      this.vlcPlayer.resume && this.vlcPlayer.resume(false);
+    }
+    if (!this.props.showContolBar) {
+      this.setState({ showPlayIcon: false });
+    }
     this.setState({ paused: !this.state.paused });
   };
 }
