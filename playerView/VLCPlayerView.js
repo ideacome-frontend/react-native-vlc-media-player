@@ -108,7 +108,8 @@ export default class VLCPlayerView extends Component {
       errorTitle,
       showSlider,
       sliderColor,
-      showContolBar
+      showContolBar,
+      ...others
     } = this.props;
     let { isLoading, loadingSuccess, showControls, showPlayIcon, isError } = this.state;
     let showGG = false;
@@ -187,6 +188,7 @@ export default class VLCPlayerView extends Component {
           onError={this._onError}
           onOpen={this._onOpen}
           onLoadStart={this._onLoadStart}
+          {...others}
         />
 
         {isError && (
