@@ -109,6 +109,7 @@ export default class VLCPlayerView extends Component {
       showSlider,
       sliderColor,
       showContolBar,
+      height,
       ...others
     } = this.props;
     let { isLoading, loadingSuccess, showControls, showPlayIcon, isError } = this.state;
